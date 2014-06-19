@@ -31,6 +31,11 @@ Classes
 ``get_parent_classes(class)``
     Return the list of all parent classes for given class.
 
+Dates
+'''''''
+``diff_month(date_from, date_to)``
+    Returns number of months between dates 'date_from' and 'date_to'
+
 Numbers
 '''''''
 ``round_to_n_decimal_places(value, n)``
