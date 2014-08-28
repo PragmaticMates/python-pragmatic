@@ -9,6 +9,13 @@ def diff_month(date_from, date_to):
     return (date_to.year - date_from.year)*12 + date_to.month - date_from.month
 
 
+def diff_days(date_from, date_to):
+    """
+    Returns number of days between dates 'date_from' and 'date_to'
+    """
+    return abs((date_to - date_from).days)
+
+
 def week_range(date):
     """Find the first/last day of the week for the given day.
     Assuming weeks start on Sunday and end on Saturday.
