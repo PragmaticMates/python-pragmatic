@@ -36,6 +36,12 @@ Dates
 ``diff_month(date_from, date_to)``
     Returns number of months between dates 'date_from' and 'date_to'
 
+``diff_days(date_from, date_to)``
+    Returns number of days between dates 'date_from' and 'date_to'
+
+``week_range(date)``
+    Returns a tuple of '(start_date, end_date)' of week range by given date.
+
 Numbers
 '''''''
 ``round_to_n_decimal_places(value, n)``
