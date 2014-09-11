@@ -46,4 +46,4 @@ def barcode(code, args=None):
 
 def remove_accents(input):
     """ Normalise (normalize) unicode string to remove umlauts, accents etc. """
-    return unicodedata.normalize('NFKD', input).encode('ASCII', 'ignore')
+    return unicodedata.normalize('NFKD', unicode(input)).encode('ASCII', 'ignore')
