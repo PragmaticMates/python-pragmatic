@@ -42,11 +42,6 @@ Dates
 ``week_range(date)``
     Returns a tuple of '(start_date, end_date)' of week range by given date.
 
-Numbers
-'''''''
-``round_to_n_decimal_places(value, n)``
-    Returns number rounded to n decimal places.
-
 OS
 ''''
 ``base64_to_file(content, file_path)``

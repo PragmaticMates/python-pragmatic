@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='python-pragmatic',
-    version='0.4.1',
+    version='0.4.2',
     description='Pragmatic tools and utilities for Python projects',
     long_description=open('README.rst').read(),
     author='Pragmatic Mates',
