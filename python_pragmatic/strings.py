@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import random
 import unicodedata
@@ -19,8 +20,8 @@ def barcode(code, args=None):
             options[key] = int(value)
 
     import barcode
-    from StringIO import StringIO
-    from thirdparty import BarcodeImageWriter
+    from io import BytesIO
+    from .thirdparty import BarcodeImageWriter
     CODETYPE = 'code39'
     bc = barcode.get_barcode(CODETYPE)
     bc = bc(code, writer=BarcodeImageWriter(), add_checksum=False)
@@ -35,15 +36,16 @@ def barcode(code, args=None):
     bc.default_writer_options.update(options)
 
     #write PNG image
-    output = StringIO()
+    output = BytesIO()
     bc.write(output)
-    contents = output.getvalue().encode("base64")
+    contents = output.getvalue()
     output.close()
 
-    #return encoded base64
-    return str(contents)
+    content = base64.b64encode(contents)
+
+    return content.decode('utf8')
 
 
 def remove_accents(input):
     """ Normalise (normalize) unicode string to remove umlauts, accents etc. """
-    return unicodedata.normalize('NFKD', unicode(input)).encode('ASCII', 'ignore')
+    return unicodedata.normalize('NFKD', u''.__class__(input)).encode('ASCII', 'ignore')
