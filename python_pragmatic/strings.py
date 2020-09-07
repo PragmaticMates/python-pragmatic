@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import random
 import unicodedata
@@ -11,19 +12,27 @@ def generate_hash(length=5):
 
 
 def barcode(code, args=None):
+    codetype = 'code39'
     options = dict()
     if args is not None:
         arguments = args.split(',')
         for arg_pair in arguments:
             key, value = arg_pair.split('=')
+            if key == 'codetype':
+                codetype = value
+                continue
+
             options[key] = int(value)
 
     import barcode
-    from StringIO import StringIO
-    from thirdparty import BarcodeImageWriter
-    CODETYPE = 'code39'
-    bc = barcode.get_barcode(CODETYPE)
-    bc = bc(code, writer=BarcodeImageWriter(), add_checksum=False)
+    from io import BytesIO
+    from .thirdparty import BarcodeImageWriter
+    bc = barcode.get_barcode(codetype)
+    try:
+        bc = bc(code, writer=BarcodeImageWriter(), add_checksum=False)
+    except TypeError:
+        bc = bc(code, writer=BarcodeImageWriter())
+
     bc.default_writer_options['quiet_zone'] = 6.4
     bc.default_writer_options['dpi'] = 300
     bc.default_writer_options['text_distance'] = 1.0
@@ -35,15 +44,16 @@ def barcode(code, args=None):
     bc.default_writer_options.update(options)
 
     #write PNG image
-    output = StringIO()
+    output = BytesIO()
     bc.write(output)
-    contents = output.getvalue().encode("base64")
+    contents = output.getvalue()
     output.close()
 
-    #return encoded base64
-    return str(contents)
+    content = base64.b64encode(contents)
+
+    return content.decode('utf8')
 
 
 def remove_accents(input):
     """ Normalise (normalize) unicode string to remove umlauts, accents etc. """
-    return unicodedata.normalize('NFKD', unicode(input)).encode('ASCII', 'ignore')
+    return unicodedata.normalize('NFKD', u''.__class__(input)).encode('ASCII', 'ignore')
