@@ -5,9 +5,10 @@ from datetime import datetime
 
 
 def generate_hash(length=5):
-    salt = hashlib.sha1(str(random.random())).hexdigest()
+    salt = str(random.random())
     pepper = str(datetime.now())
-    return hashlib.sha1(salt + pepper).hexdigest()[:length]
+    soup = (salt + pepper).encode('utf-8')
+    return hashlib.sha1(soup).hexdigest()[:length]
 
 
 def barcode(code, args=None):
