@@ -20,8 +20,8 @@ def barcode(code, args=None):
             options[key] = int(value)
 
     import barcode
-    from StringIO import StringIO
-    from thirdparty import BarcodeImageWriter
+    from io import StringIO
+    from python_pragmatic.thirdparty import BarcodeImageWriter
     CODETYPE = 'code39'
     bc = barcode.get_barcode(CODETYPE)
     bc = bc(code, writer=BarcodeImageWriter(), add_checksum=False)
@@ -50,4 +50,4 @@ def barcode(code, args=None):
 
 def remove_accents(input):
     """ Normalise (normalize) unicode string to remove umlauts, accents etc. """
-    return unicodedata.normalize('NFKD', unicode(input)).encode('ASCII', 'ignore')
+    return unicodedata.normalize('NFKD', str(input)).encode('ASCII', 'ignore')
