@@ -21,27 +21,31 @@ def barcode(code, args=None):
             key, value = arg_pair.split('=')
             options[key] = int(value)
 
-    import barcode
     from python_pragmatic.thirdparty import BarcodeImageWriter
-    CODETYPE = 'code39'
-    bc = barcode.get_barcode(CODETYPE)
-    bc = bc(code, writer=BarcodeImageWriter(), add_checksum=False)
-    dpi = 300
-    module_height = 7.0
-    bc.default_writer_options['quiet_zone'] = 6.4
-    bc.default_writer_options['dpi'] = dpi
-    bc.default_writer_options['text_distance'] = 1.0
-    bc.default_writer_options['module_height'] = module_height
-    # bc.default_writer_options['module_width'] = 0.3
-    font_size = int(dpi / 5)
-    bc.default_writer_options['font_size'] = font_size
 
-    # update by custom arguments
-    bc.default_writer_options.update(options)
-
-    # write PNG image
+    import barcode
     output = BytesIO()
-    bc.write(output)
+
+    barcode.Code39(code=code,
+                   # writer=ImageWriter(),  # has bottom padding
+                   writer=BarcodeImageWriter(),  # removes bottom padding
+                   add_checksum=False)\
+        .write(output, options={
+            # ImageWriter options
+            # 'quiet_zone': 2.5,
+            # 'dpi': 300,
+            # 'font_size': 30,
+            # 'module_height': 7.0,
+            # 'text_distance': 2
+
+            # BarcodeImageWriter options
+            'quiet_zone': 2.5,
+            'dpi': 300,
+            'font_size': 60,
+            'module_height': 7.0,
+            'text_distance': 1
+        })
+
     code_in_bytes = output.getvalue()
     code_in_base64_bytes = b64encode(code_in_bytes)
     code_in_base_64_string = code_in_base64_bytes.decode("utf-8")
