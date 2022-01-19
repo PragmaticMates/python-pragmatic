@@ -1,5 +1,5 @@
 from PIL import ImageFont
-from barcode.writer import mm2px, ImageWriter, FONT
+from barcode.writer import mm2px, ImageWriter
 
 
 class BarcodeImageWriter(ImageWriter):
@@ -19,5 +19,5 @@ class BarcodeImageWriter(ImageWriter):
         text_width = len(self.text) * letter_width * 0.065 * (float(300) / self.dpi)
         xpos -= text_width/2
         pos = (mm2px(xpos, self.dpi), mm2px(ypos, self.dpi))
-        font = ImageFont.truetype(FONT, self.font_size)
+        font = ImageFont.truetype(self.font_path, self.font_size)  # custom
         self._draw.text(pos, self.text, font=font, fill=self.foreground)

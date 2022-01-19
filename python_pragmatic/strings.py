@@ -1,7 +1,9 @@
 import hashlib
 import random
 import unicodedata
+from base64 import b64encode
 from datetime import datetime
+from io import BytesIO
 
 
 def generate_hash(length=5):
@@ -20,7 +22,6 @@ def barcode(code, args=None):
             options[key] = int(value)
 
     import barcode
-    from io import StringIO
     from python_pragmatic.thirdparty import BarcodeImageWriter
     CODETYPE = 'code39'
     bc = barcode.get_barcode(CODETYPE)
@@ -38,14 +39,13 @@ def barcode(code, args=None):
     # update by custom arguments
     bc.default_writer_options.update(options)
 
-    #write PNG image
-    output = StringIO()
+    # write PNG image
+    output = BytesIO()
     bc.write(output)
-    contents = output.getvalue().encode("base64")
-    output.close()
-
-    #return encoded base64
-    return str(contents)
+    code_in_bytes = output.getvalue()
+    code_in_base64_bytes = b64encode(code_in_bytes)
+    code_in_base_64_string = code_in_base64_bytes.decode("utf-8")
+    return code_in_base_64_string
 
 
 def remove_accents(input):
